@@ -8,6 +8,7 @@ import { LifecycleChart } from "@/components/reporting/lifecycle-chart";
 import { ChannelChart } from "@/components/reporting/channel-chart";
 import { CampaignContactsTable } from "@/components/reporting/campaign-contacts-table";
 import { LandingPageChart } from "@/components/reporting/landing-page-chart";
+import { PageTrafficChart } from "@/components/reporting/page-traffic-chart";
 import type { CampaignDashboardData } from "@/types/reporting-types";
 
 const container: Variants = {
@@ -159,6 +160,18 @@ export default function TravelDashboard() {
             <div className="w-full h-full">
               <ChannelChart data={data.channels} />
             </div>
+          </motion.div>
+
+          {/* Page Traffic */}
+          <motion.div
+            variants={item}
+            className="col-span-1 md:col-span-12"
+          >
+            <PageTrafficChart
+              pathname="/the-future-of-travel-payments-in-south-africa/"
+              title="Campaign Landing Page"
+              description="Performance metrics for the Travel campaign landing page"
+            />
           </motion.div>
 
           {/* Landing Pages */}
