@@ -1,65 +1,82 @@
-import Image from "next/image";
+import Link from "next/link";
+
+const campaigns = [
+  {
+    name: "Travel 2026",
+    description: "Live HubSpot attribution data for the Travel campaign",
+    href: "/travel-campaign-2026",
+    status: "Active",
+    live: true,
+  },
+  {
+    name: "Payouts 2026",
+    description: "Campaign retrospective with presentation data",
+    href: "/payouts-campaign-2026",
+    status: "Completed",
+    live: false,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen p-6 md:p-10 lg:p-14 max-w-[1200px] mx-auto relative">
+      <img
+        src="/Peach Payments Pattern Background Top Section - Compressed.avif"
+        alt="Background Pattern"
+        className="fixed inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
+      />
+
+      <div className="relative">
+        <div className="text-center mb-12 pt-8">
+          <p className="text-muted-foreground text-sm tracking-wide uppercase font-medium mb-3">
+            Peach Payments
+          </p>
+          <h1 className="text-5xl md:text-6xl font-heading tracking-tight mb-4">
+            <span className="text-gradient-brand">Campaign Reports</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg text-muted-foreground max-w-lg mx-auto">
+            Marketing attribution dashboards powered by HubSpot, N8N, and Sink
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
+          {campaigns.map((campaign) => (
+            <Link key={campaign.href} href={campaign.href}>
+              <div className="bento-card p-8 h-full group relative overflow-hidden hover:border-primary/30 transition-colors cursor-pointer">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-primary/20 transition-colors duration-500" />
+                <div className="flex items-center gap-2 mb-3">
+                  {campaign.live && (
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
+                    </span>
+                  )}
+                  <span
+                    className={`text-xs font-semibold uppercase tracking-wider ${
+                      campaign.live ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    {campaign.status}
+                  </span>
+                </div>
+                <h2 className="text-2xl font-bold mb-2">{campaign.name}</h2>
+                <p className="text-sm text-muted-foreground">
+                  {campaign.description}
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
-      </main>
+
+        <div className="text-center mt-12">
+          <Link
+            href="/skills"
+            className="text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            Marketing Skills &rarr;
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

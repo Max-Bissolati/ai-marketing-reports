@@ -7,123 +7,255 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-rethink-sans);
+  --font-heading: var(--font-sora);
+
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 8px);
 }
 
 @layer base {
+  :root {
+    /* Hard-coding dark mode variables to force the theme globally */
+    --background: #050505;
+    --foreground: #F8F8F8;
+
+    /* True 2026 Glassmorphism: Cards are partially transparent over the background */
+    --card: rgba(255, 255, 255, 0.02);
+    --card-foreground: #F8F8F8;
+
+    --popover: rgba(10, 10, 10, 0.8);
+    --popover-foreground: #F8F8F8;
+
+    /* Our primary ultra-modern vibrant orange */
+    --primary: #FF6600;
+    --primary-foreground: #FFFFFF;
+
+    --secondary: rgba(255, 255, 255, 0.05);
+    --secondary-foreground: #FFFFFF;
+
+    --muted: rgba(255, 255, 255, 0.05);
+    --muted-foreground: #A1A1AA;
+
+    --accent: rgba(255, 102, 0, 0.15);
+    --accent-foreground: #FF6600;
+
+    --destructive: #EF4444;
+    --destructive-foreground: #FFFFFF;
+
+    /* 1px subtle borders for the glass effect */
+    --border: rgba(255, 255, 255, 0.08);
+    --input: rgba(255, 255, 255, 0.08);
+    --ring: rgba(255, 102, 0, 0.5);
+
+    --radius: 1.5rem;
+    /* Huge rounded corners for the 2026 feel */
+  }
+
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans min-h-screen;
+    /* 
+     * Refined Background: 
+     * 1. Top glow (radial)
+     * 2. Darkening overlay (linear)
+     * 3. Main pattern (url)
+     * Using 'fixed' on the pattern layer and 'scroll' on the glow to prevent weird overlaps.
+     */
+    background-image:
+      radial-gradient(circle at 50% -10%, rgba(255, 102, 0, 0.12) 0%, transparent 50%),
+      linear-gradient(rgba(5, 5, 5, 0.7), rgba(5, 5, 5, 0.7)),
+      url('/Peach Payments Pattern Background Top Section - Compressed.avif');
+    background-size: 100% 800px, cover, cover;
+    background-position: top center, center center, center center;
+    background-attachment: scroll, fixed, fixed;
+    background-repeat: no-repeat;
   }
-  html {
-    @apply font-sans;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight;
+  }
+
+  /* Custom glow effect class */
+  .glow-effect {
+    filter: drop-shadow(0 0 15px rgba(255, 102, 0, 0.4));
+  }
+}
+
+@layer components {
+
+  /*
+   * Refined True Glassmorphism (2026 Aesthetic)
+   *
+   * Subtle iOS/macOS-style frosted glass - content behind remains visible.
+   */
+  .bento-card {
+    @apply relative overflow-hidden rounded-[24px];
+
+    /* The Glass Pane - More transparent with lighter blur for subtle frosted effect */
+    @apply bg-white/[0.04] backdrop-blur-[12px] backdrop-saturate-[1.2];
+
+    /* The Edge Highlight */
+    @apply border border-white/10;
+
+    /* The Shadow */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+
+    /* Fix for hardware acceleration bugs breaking filters */
+    will-change: auto !important;
+    transform: translateZ(0);
+
+    /* Smooth hover interaction */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  /* The Glare / Light Reflection */
+  .bento-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(125deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.02) 40%,
+        transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .bento-card:hover {
+    @apply border-white/15 bg-white/[0.07];
+    box-shadow: 0 16px 48px 0 rgba(255, 102, 0, 0.15);
+    transform: translateY(-4px) translateZ(0);
+  }
+}
+
+/* SVG Filter-based Frosted Glass Effects */
+@layer components {
+  .glass-element {
+    /* Base glass styling using SVG filter */
+    backdrop-filter: url(#frosted);
+    -webkit-backdrop-filter: url(#frosted);
+
+    /* Fallback for browsers without SVG filter support - subtle blur */
+    @supports not (backdrop-filter: url(#frosted)) {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+  }
+
+  .glass-light {
+    backdrop-filter: url(#frosted-light);
+    -webkit-backdrop-filter: url(#frosted-light);
+  }
+
+  .glass-heavy {
+    backdrop-filter: url(#frosted-heavy);
+    -webkit-backdrop-filter: url(#frosted-heavy);
+  }
+
+  /* Glass panel with enhanced styling - subtle frosted effect */
+  .glass-panel {
+    @apply relative overflow-hidden;
+    @apply bg-white/[0.05] backdrop-blur-[12px];
+    @apply border border-white/10;
+    @apply rounded-3xl;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+
+    /* Use SVG filter for enhanced effect with subtle blur */
+    backdrop-filter: blur(12px) url(#frosted);
+    -webkit-backdrop-filter: blur(12px) url(#frosted);
+  }
+
+  .glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(125deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.02) 40%,
+        transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Interactive glass button style - subtle frosted effect */
+  .glass-button {
+    @apply relative inline-flex items-center justify-center;
+    @apply px-6 py-3;
+    @apply bg-white/[0.06];
+    @apply border border-white/15;
+    @apply rounded-full;
+    @apply text-white font-medium;
+    @apply cursor-pointer outline-none;
+    @apply transition-all duration-300 ease-out;
+
+    backdrop-filter: blur(8px) url(#frosted-light);
+    -webkit-backdrop-filter: blur(8px) url(#frosted-light);
+  }
+
+  .glass-button:hover {
+    @apply bg-white/[0.10] border-white/25;
+    @apply scale-105;
+    box-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
+  }
+
+  .glass-button:active {
+    @apply scale-95;
+  }
+}
+
+@layer utilities {
+
+  /* Animated Gradient Highlight from Brand */
+  .text-gradient-brand {
+    background: linear-gradient(45deg, #FFC539, #EC5228, #5D6ADC, #91DDAB);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: text-gradient 10s ease infinite;
+    font-weight: 700;
+  }
+}
+
+@keyframes text-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
