@@ -135,7 +135,7 @@ export function PageTrafficChart({
         </div>
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-[250px] w-full [&_svg]:overflow-visible"
         >
           <AreaChart
             data={data.dataPoints}

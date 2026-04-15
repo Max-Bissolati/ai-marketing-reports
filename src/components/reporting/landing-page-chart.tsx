@@ -186,7 +186,7 @@ export function LandingPageChart({ campaign }: LandingPageChartProps) {
           </p>
           <ChartContainer
             config={chartConfig}
-            className="max-h-[200px] w-full"
+            className="max-h-[200px] w-full [&_svg]:overflow-visible"
           >
             <BarChart data={chartData} margin={{ left: 0, right: 0, top: 10 }}>
               <CartesianGrid vertical={false} opacity={0.3} />

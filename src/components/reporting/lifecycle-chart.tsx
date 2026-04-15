@@ -69,7 +69,7 @@ export function LifecycleChart({ data }: LifecycleChartProps) {
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="max-h-[280px] w-full mt-4"
+          className="max-h-[280px] w-full mt-4 [&_svg]:overflow-visible"
         >
           <BarChart
             data={chartData}
