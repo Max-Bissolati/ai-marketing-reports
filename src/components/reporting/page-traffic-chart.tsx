@@ -48,22 +48,26 @@ export function PageTrafficChart({
   description = "Daily page views and unique sessions from Rybbit analytics",
 }: PageTrafficChartProps) {
   const [data, setData] = useState<PageTrafficData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [fetching, setFetching] = useState(false);
   const [timeRange, setTimeRange] = useState("90d");
 
   useEffect(() => {
     const days = timeRange === "7d" ? "7" : timeRange === "30d" ? "30" : "90";
-    setLoading(true);
+    setFetching(true);
     fetch(
       `/api/page-traffic?pathname=${encodeURIComponent(pathname)}&days=${days}`
     )
       .then((res) => res.json())
       .then((json) => setData(json))
       .catch(() => {})
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setInitialLoading(false);
+        setFetching(false);
+      });
   }, [pathname, timeRange]);
 
-  if (loading) {
+  if (initialLoading) {
     return (
       <Card className="bento-card border-0 shadow-none">
         <CardContent className="flex items-center justify-center h-[350px]">
@@ -112,7 +116,7 @@ export function PageTrafficChart({
           ))}
         </div>
       </CardHeader>
-      <CardContent className="pt-6">
+      <CardContent className={`pt-6 transition-opacity duration-300 ${fetching ? "opacity-50" : "opacity-100"}`}>
         <div className="flex gap-6 mb-4 text-sm">
           <div>
             <span className="text-muted-foreground">Total Views</span>{" "}
@@ -139,7 +143,7 @@ export function PageTrafficChart({
         >
           <AreaChart
             data={data.dataPoints}
-            margin={{ left: 0, right: 0, top: 20, bottom: 0 }}
+            margin={{ left: 0, right: 0, top: 30, bottom: 10 }}
           >
             <defs>
               <linearGradient id="fillViews" x1="0" y1="0" x2="0" y2="1">
