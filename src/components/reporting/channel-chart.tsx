@@ -63,7 +63,7 @@ export function ChannelChart({ data }: ChannelChartProps) {
           config={chartConfig}
           className="max-h-[280px] w-full mt-4"
         >
-          <BarChart data={chartData} margin={{ left: 0, right: 0 }}>
+          <BarChart data={chartData} margin={{ left: 0, right: 0, top: 10 }}>
             <CartesianGrid vertical={false} opacity={0.3} />
             <XAxis
               dataKey="channel"

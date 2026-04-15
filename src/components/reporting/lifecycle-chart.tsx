@@ -74,7 +74,7 @@ export function LifecycleChart({ data }: LifecycleChartProps) {
           <BarChart
             data={chartData}
             layout="vertical"
-            margin={{ left: 0, right: 0 }}
+            margin={{ left: 0, right: 10 }}
           >
             <CartesianGrid horizontal={false} opacity={0.3} />
             <YAxis
@@ -84,7 +84,7 @@ export function LifecycleChart({ data }: LifecycleChartProps) {
               axisLine={false}
               fontSize={12}
               tick={{ fill: "var(--muted-foreground)" }}
-              width={50}
+              width={80}
             />
             <XAxis dataKey="count" type="number" hide />
             <ChartTooltip

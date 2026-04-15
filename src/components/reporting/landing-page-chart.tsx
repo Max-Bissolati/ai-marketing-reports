@@ -188,7 +188,7 @@ export function LandingPageChart({ campaign }: LandingPageChartProps) {
             config={chartConfig}
             className="max-h-[200px] w-full"
           >
-            <BarChart data={chartData} margin={{ left: 0, right: 0 }}>
+            <BarChart data={chartData} margin={{ left: 0, right: 0, top: 10 }}>
               <CartesianGrid vertical={false} opacity={0.3} />
               <XAxis
                 dataKey="channel"
