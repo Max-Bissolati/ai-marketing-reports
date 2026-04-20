@@ -20,7 +20,8 @@ import { LifecycleChart } from "@/components/reporting/lifecycle-chart";
 import { WWXFormChart } from "@/components/reporting/wwx-form-chart";
 import { WWXInfluencedChart } from "@/components/reporting/wwx-influenced-chart";
 import { WWXSubmittersTable } from "@/components/reporting/wwx-submitters-table";
-import type { WWXCampaignData } from "@/types/reporting-types";
+import { WWXPageTrafficChart } from "@/components/reporting/wwx-page-traffic-chart";
+import type { WWXCampaignData, WWXPageTrafficData } from "@/types/reporting-types";
 
 // ─── Static attribution data (source: HubSpot Campaign Dashboard) ────────────
 // These metrics come from HubSpot's proprietary attribution engine and are not
@@ -58,6 +59,8 @@ export default function WWXDashboard() {
   const [data, setData] = useState<WWXCampaignData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [trafficData, setTrafficData] = useState<WWXPageTrafficData | null>(null);
+  const [trafficLoading, setTrafficLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/wwx-campaign-data")
@@ -68,6 +71,12 @@ export default function WWXDashboard() {
       .then((json) => setData(json))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+
+    fetch("/api/wwx-page-traffic")
+      .then((res) => res.ok ? res.json() : null)
+      .then((json) => setTrafficData(json))
+      .catch(() => null)
+      .finally(() => setTrafficLoading(false));
   }, []);
 
   return (
@@ -217,6 +226,17 @@ export default function WWXDashboard() {
             </div>
           </motion.div>
 
+          {/* ── Landing Page Traffic (GA4 live) ─────────────────────────── */}
+          <motion.div variants={item} className="col-span-1 md:col-span-12">
+            {trafficLoading ? (
+              <Card className="bento-card border-0 shadow-none flex items-center justify-center min-h-[280px]">
+                <Loader2 className="w-6 h-6 text-primary animate-spin" />
+              </Card>
+            ) : trafficData ? (
+              <WWXPageTrafficChart data={trafficData} />
+            ) : null}
+          </motion.div>
+
           {/* ── CTA & Asset Performance (static) ────────────────────────── */}
           <motion.div variants={item} className="col-span-1 md:col-span-12">
             <div className="flex items-center gap-2 mb-3">
@@ -272,9 +292,10 @@ export default function WWXDashboard() {
             <div>
               <h3 className="text-xl font-bold mb-1">Data Sources</h3>
               <p className="text-muted-foreground text-sm max-w-lg">
-                Form submissions fetched live from HubSpot API (cached 30 min). Attribution metrics sourced
-                from the HubSpot Campaign Dashboard — these use HubSpot&apos;s proprietary influence
-                attribution model and are updated manually.
+                Form submissions fetched live from HubSpot API (cached 30 min). Landing page traffic fetched
+                live from Google Analytics 4 via N8N (cached 30 min). Attribution metrics sourced from the
+                HubSpot Campaign Dashboard — these use HubSpot&apos;s proprietary influence attribution
+                model and are updated manually.
               </p>
             </div>
             <div className="flex flex-col gap-2">
@@ -284,6 +305,13 @@ export default function WWXDashboard() {
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
                 </span>
                 <span className="text-xs font-semibold text-primary">Live · HubSpot Form API</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34d399] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#34d399]" />
+                </span>
+                <span className="text-xs font-semibold text-[#34d399]">Live · Google Analytics 4 via N8N</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2.5 w-2.5">

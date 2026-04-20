@@ -80,6 +80,26 @@ export interface WWXCampaignData {
   recentSubmitters: WWXSubmitter[];
 }
 
+export interface WWXDailyTraffic {
+  date: string;
+  sessions: number;
+  pageViews: number;
+  users: number;
+}
+
+export interface WWXChannelTraffic {
+  channel: string;
+  sessions: number;
+  pageViews: number;
+}
+
+export interface WWXPageTrafficData {
+  generatedAt: string;
+  totals: { sessions: number; pageViews: number; users: number };
+  daily: WWXDailyTraffic[];
+  channels: WWXChannelTraffic[];
+}
+
 export interface CampaignContact {
     id: string;
     email: string;
