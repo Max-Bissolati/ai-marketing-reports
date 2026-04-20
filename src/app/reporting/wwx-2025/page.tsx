@@ -8,7 +8,7 @@ import { LifecycleChart } from "@/components/reporting/lifecycle-chart";
 import { ChannelChart } from "@/components/reporting/channel-chart";
 import { PageTrafficChart } from "@/components/reporting/page-traffic-chart";
 import { LandingPageChart } from "@/components/reporting/landing-page-chart";
-import { WWXSubmittersTable } from "@/components/reporting/wwx-submitters-table";
+import { CampaignContactsTable } from "@/components/reporting/campaign-contacts-table";
 import type { WWXCampaignData } from "@/types/reporting-types";
 
 const INFLUENCED_LIFECYCLE = [
@@ -230,8 +230,8 @@ export default function WWXDashboard() {
 
           {/* Contacts Table */}
           <motion.div variants={item} className="col-span-1 md:col-span-12 mt-4">
-            {data.recentSubmitters.length > 0 ? (
-              <WWXSubmittersTable submitters={data.recentSubmitters} />
+            {data.contacts.length > 0 ? (
+              <CampaignContactsTable contacts={data.contacts} />
             ) : (
               <div className="bento-card p-8 flex items-center justify-center">
                 <p className="text-muted-foreground text-sm">No data available</p>
