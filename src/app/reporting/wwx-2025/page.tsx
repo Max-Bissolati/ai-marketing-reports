@@ -176,7 +176,7 @@ export default function WWXDashboard() {
 
           <motion.div variants={item} className="col-span-1 md:col-span-7 flex h-full">
             <div className="w-full h-full">
-              <ChannelChart data={[]} />
+              <ChannelChart data={data.channels} />
             </div>
           </motion.div>
 

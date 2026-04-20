@@ -56,6 +56,8 @@ interface HsContactData {
   firstname: string;
   lastname: string;
   company: string;
+  analyticsSource: string;
+  analyticsSourceData1: string;
 }
 
 async function batchReadContacts(emails: string[]): Promise<Map<string, HsContactData>> {
@@ -72,7 +74,10 @@ async function batchReadContacts(emails: string[]): Promise<Map<string, HsContac
       },
       body: JSON.stringify({
         idProperty: "email",
-        properties: ["firstname", "lastname", "email", "company", "lifecyclestage"],
+        properties: [
+          "firstname", "lastname", "email", "company", "lifecyclestage",
+          "hs_analytics_source", "hs_analytics_source_data_1",
+        ],
         inputs: batch.map((email) => ({ id: email })),
       }),
     });
@@ -82,17 +87,40 @@ async function batchReadContacts(emails: string[]): Promise<Map<string, HsContac
       const email = (contact.properties?.email ?? "").toLowerCase().trim();
       if (email) {
         result.set(email, {
-          id: contact.id,
-          lifecyclestage: contact.properties?.lifecyclestage ?? "",
-          firstname: contact.properties?.firstname ?? "",
-          lastname: contact.properties?.lastname ?? "",
-          company: contact.properties?.company ?? "",
+          id:                   contact.id,
+          lifecyclestage:       contact.properties?.lifecyclestage        ?? "",
+          firstname:            contact.properties?.firstname             ?? "",
+          lastname:             contact.properties?.lastname              ?? "",
+          company:              contact.properties?.company               ?? "",
+          analyticsSource:      contact.properties?.hs_analytics_source   ?? "",
+          analyticsSourceData1: contact.properties?.hs_analytics_source_data_1 ?? "",
         });
       }
     }
   }
 
   return result;
+}
+
+// Map HubSpot hs_analytics_source → {source, medium} for ChannelChart
+function hsSourceToChannel(src: string, data1: string): { source: string; medium: string } {
+  const s = src.toUpperCase();
+  if (s === "ORGANIC_SEARCH")  return { source: "organic_search",  medium: "organic" };
+  if (s === "PAID_SEARCH")     return { source: "paid_search",      medium: "cpc"     };
+  if (s === "EMAIL_MARKETING") return { source: "email",            medium: "email"   };
+  if (s === "REFERRALS")       return { source: "referral",         medium: "referral"};
+  if (s === "DIRECT_TRAFFIC")  return { source: "direct",           medium: "(none)"  };
+  if (s === "OTHER_CAMPAIGNS") return { source: "other_campaigns",  medium: "campaign"};
+  if (s === "OFFLINE")         return { source: "offline",          medium: "offline" };
+  if (s === "SOCIAL_MEDIA") {
+    const d = (data1 || "").toLowerCase();
+    if (d.includes("linkedin")) return { source: "linkedin",  medium: "social" };
+    if (d.includes("facebook")) return { source: "facebook",  medium: "social" };
+    if (d.includes("twitter") || d.includes("t.co")) return { source: "twitter", medium: "social" };
+    if (d.includes("instagram")) return { source: "instagram", medium: "social" };
+    return { source: "social", medium: "social" };
+  }
+  return { source: src.toLowerCase() || "unknown", medium: "unknown" };
 }
 
 // ─── Main cached fetch ─────────────────────────────────────────────────────────
@@ -136,8 +164,24 @@ const getCampaignData = unstable_cache(
     const allEmails = Array.from(emailMap.keys());
     const contactMap = await batchReadContacts(allEmails);
 
+    // Build contacts + aggregate channel data in one pass
+    const channelMap = new Map<string, { source: string; medium: string; count: number }>();
+
     const contacts: CampaignContact[] = Array.from(emailMap.entries()).map(([email, sub]) => {
       const hs = contactMap.get(email);
+
+      // Aggregate channel from hs_analytics_source
+      if (hs?.analyticsSource) {
+        const ch = hsSourceToChannel(hs.analyticsSource, hs.analyticsSourceData1);
+        const key = `${ch.source}|${ch.medium}`;
+        const existing = channelMap.get(key);
+        if (existing) {
+          existing.count++;
+        } else {
+          channelMap.set(key, { ...ch, count: 1 });
+        }
+      }
+
       return {
         id:                 hs?.id ?? email,
         email,
@@ -145,8 +189,8 @@ const getCampaignData = unstable_cache(
         lastname:           hs?.lastname   || sub.vals.lastname   || "",
         company:            hs?.company    || sub.vals.company    || "",
         lifecyclestage:     hs?.lifecyclestage ?? "",
-        utmSource:          "",
-        utmMedium:          "",
+        utmSource:          hs?.analyticsSource ?? "",
+        utmMedium:          hs ? hsSourceToChannel(hs.analyticsSource, hs.analyticsSourceData1).medium : "",
         marketingAssisted:  "no",
         touchCount:         sub.count,
         firstTouchCampaign: "World Wide Worx | 2025",
@@ -155,6 +199,9 @@ const getCampaignData = unstable_cache(
           : "",
       };
     });
+
+    const channels = Array.from(channelMap.values())
+      .sort((a, b) => b.count - a.count);
 
     // Keep recentSubmitters for backward compat (legacy backup page)
     const recentSubmitters = mainSubs.slice(0, 100).map((s) => {
@@ -180,9 +227,10 @@ const getCampaignData = unstable_cache(
       submissionsMonthly: buildMonthly(allSubs),
       recentSubmitters,
       contacts,
+      channels,
     };
   },
-  ["wwx-campaign-data-v2"],
+  ["wwx-campaign-data-v3"],
   { revalidate: 1800 }
 );
 

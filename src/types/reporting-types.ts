@@ -79,6 +79,7 @@ export interface WWXCampaignData {
   submissionsMonthly: Array<{ month: string; count: number }>;
   recentSubmitters: WWXSubmitter[];
   contacts: CampaignContact[];
+  channels: { source: string; medium: string; count: number }[];
 }
 
 export interface WWXDailyTraffic {

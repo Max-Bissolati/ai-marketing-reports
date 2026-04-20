@@ -16,22 +16,45 @@ import {
 } from "@/components/ui/chart";
 
 const SOURCE_COLORS: Record<string, string> = {
-  linkedin: "#0a66c2",
-  email: "var(--primary)",
-  main_website: "#22d3ee",
-  table_talker: "#a78bfa",
-  press_release: "#f59e0b",
-  unknown: "var(--muted-foreground)",
+  // Sink UTM sources
+  linkedin:        "#0a66c2",
+  email:           "var(--primary)",
+  main_website:    "#22d3ee",
+  table_talker:    "#a78bfa",
+  press_release:   "#f59e0b",
+  // HubSpot hs_analytics_source values
+  organic_search:  "#34d399",
+  paid_search:     "#facc15",
+  direct:          "#94a3b8",
+  referral:        "#22d3ee",
+  social:          "#0a66c2",
+  facebook:        "#1877f2",
+  instagram:       "#e4405f",
+  twitter:         "#1da1f2",
+  other_campaigns: "#f59e0b",
+  offline:         "#a78bfa",
+  unknown:         "var(--muted-foreground)",
 };
 
 const SOURCE_LABELS: Record<string, string> = {
-  linkedin: "LinkedIn",
-  email: "Email",
-  main_website: "Website",
-  table_talker: "QR Code",
-  press_release: "Press",
-  google: "Google",
-  facebook: "Facebook",
+  // Sink UTM sources
+  linkedin:        "LinkedIn",
+  email:           "Email",
+  main_website:    "Website",
+  table_talker:    "QR Code",
+  press_release:   "Press",
+  google:          "Google",
+  facebook:        "Facebook",
+  // HubSpot hs_analytics_source values
+  organic_search:  "Organic Search",
+  paid_search:     "Paid Search",
+  direct:          "Direct",
+  referral:        "Referral",
+  social:          "Social",
+  instagram:       "Instagram",
+  twitter:         "Twitter",
+  other_campaigns: "Other Campaigns",
+  offline:         "Offline",
 };
 
 const chartConfig = {
