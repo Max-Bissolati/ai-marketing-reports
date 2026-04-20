@@ -11,14 +11,6 @@ import { LandingPageChart } from "@/components/reporting/landing-page-chart";
 import { CampaignContactsTable } from "@/components/reporting/campaign-contacts-table";
 import type { WWXCampaignData } from "@/types/reporting-types";
 
-const INFLUENCED_LIFECYCLE = [
-  { stage: "other", count: 2672 },
-  { stage: "lead", count: 469 },
-  { stage: "marketingqualifiedlead", count: 467 },
-  { stage: "opportunity", count: 141 },
-  { stage: "customer", count: 96 },
-  { stage: "salesqualifiedlead", count: 44 },
-];
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -73,6 +65,16 @@ export default function WWXDashboard() {
       </div>
     );
   }
+
+  const lifecycleData = Object.entries(
+    data.contacts.reduce((acc, c) => {
+      const stage = c.lifecyclestage || "other";
+      acc[stage] = (acc[stage] ?? 0) + 1;
+      return acc;
+    }, {} as Record<string, number>)
+  )
+    .map(([stage, count]) => ({ stage, count }))
+    .sort((a, b) => b.count - a.count);
 
   const kpis = [
     {
@@ -167,7 +169,7 @@ export default function WWXDashboard() {
           {/* Lifecycle + Channel */}
           <motion.div variants={item} className="col-span-1 md:col-span-5 flex h-full">
             <div className="w-full h-full">
-              <LifecycleChart data={INFLUENCED_LIFECYCLE} />
+              <LifecycleChart data={lifecycleData} />
             </div>
           </motion.div>
 
@@ -182,7 +184,6 @@ export default function WWXDashboard() {
             <PageTrafficChart
               pathname="/"
               siteId={2}
-              showTimeRange={false}
               title="Landing Page Traffic"
               description="Daily sessions for reports.peachpayments.com · GA4 data via Rybbit"
             />
