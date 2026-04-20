@@ -54,10 +54,10 @@ export function PageTrafficChart({
   const [data, setData] = useState<PageTrafficData | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
   const [fetching, setFetching] = useState(false);
-  const [timeRange, setTimeRange] = useState("90d");
+  const [timeRange, setTimeRange] = useState("all");
 
   useEffect(() => {
-    const days = timeRange === "7d" ? "7" : timeRange === "30d" ? "30" : "90";
+    const days = timeRange === "7d" ? "7" : timeRange === "30d" ? "30" : timeRange === "90d" ? "90" : "all";
     setFetching(true);
     const params = new URLSearchParams({ pathname, days });
     if (siteId) params.set("siteId", String(siteId));
@@ -109,7 +109,7 @@ export function PageTrafficChart({
         </div>
         {showTimeRange && (
           <div className="flex rounded-xl overflow-hidden bg-white/[0.04] backdrop-blur-[12px] backdrop-saturate-[1.2] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-            {(["90d", "30d", "7d"] as const).map((range) => (
+            {(["all", "90d", "30d", "7d"] as const).map((range) => (
               <button
                 key={range}
                 onClick={() => setTimeRange(range)}
@@ -123,11 +123,13 @@ export function PageTrafficChart({
                   <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 animate-pulse" />
                 )}
                 <span className="relative">
-                  {range === "90d"
-                    ? "Last 3 months"
-                    : range === "30d"
-                      ? "Last 30 days"
-                      : "Last 7 days"}
+                  {range === "all"
+                    ? "All time"
+                    : range === "90d"
+                      ? "Last 3 months"
+                      : range === "30d"
+                        ? "Last 30 days"
+                        : "Last 7 days"}
                 </span>
               </button>
             ))}
