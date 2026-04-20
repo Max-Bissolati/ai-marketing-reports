@@ -133,9 +133,6 @@ export default function WWXDashboard() {
               <span className="text-gradient-brand italic font-black pr-1">Online Retail</span>{" "}
               <span className="font-light">Report 2025</span>
             </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              World Wide Worx | 2025 · Campaign owner: Promise Mfeka
-            </p>
           </div>
 
           <div className="flex items-center gap-3">
