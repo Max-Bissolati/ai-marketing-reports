@@ -41,7 +41,7 @@ export function ReportNav() {
           className="!top-4 !bottom-4 !left-4 !h-[calc(100dvh-2rem)] !w-[300px] bg-transparent border-none shadow-none p-0"
         >
           {/* Glass card */}
-          <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-white/[0.06] backdrop-blur-[28px] backdrop-saturate-[1.6] border border-white/10 shadow-[0_8px_48px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]">
+          <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-[#070a43]/80 backdrop-blur-[12px] border border-white/10 shadow-[0_8px_48px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)]">
 
             <SheetHeader className="px-5 pt-6 pb-5 border-b border-white/[0.07] shrink-0">
               <div className="flex items-center gap-3">
