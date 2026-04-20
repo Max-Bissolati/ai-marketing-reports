@@ -87,7 +87,23 @@ export function LandingPageChart({ campaign }: LandingPageChartProps) {
     );
   }
 
-  if (!data || data.landingPages.length === 0) return null;
+  if (!data || data.landingPages.length === 0) {
+    return (
+      <Card className="bento-card border-0 shadow-none h-full">
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Campaign Landing Pages</CardTitle>
+              <CardDescription>Destination pages &amp; tracking link distribution from Sink</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[200px]">
+          <p className="text-muted-foreground text-sm">No data available</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   // Build chart data: one bar per source across all pages
   const allSources = new Map<string, number>();

@@ -40,12 +40,16 @@ interface PageTrafficChartProps {
   pathname: string;
   title?: string;
   description?: string;
+  siteId?: number;
+  showTimeRange?: boolean;
 }
 
 export function PageTrafficChart({
   pathname,
   title = "Landing Page Traffic",
   description = "Daily page views and unique sessions from Rybbit analytics",
+  siteId,
+  showTimeRange = true,
 }: PageTrafficChartProps) {
   const [data, setData] = useState<PageTrafficData | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -55,9 +59,9 @@ export function PageTrafficChart({
   useEffect(() => {
     const days = timeRange === "7d" ? "7" : timeRange === "30d" ? "30" : "90";
     setFetching(true);
-    fetch(
-      `/api/page-traffic?pathname=${encodeURIComponent(pathname)}&days=${days}`
-    )
+    const params = new URLSearchParams({ pathname, days });
+    if (siteId) params.set("siteId", String(siteId));
+    fetch(`/api/page-traffic?${params}`)
       .then((res) => res.json())
       .then((json) => setData(json))
       .catch(() => {})
@@ -77,7 +81,19 @@ export function PageTrafficChart({
     );
   }
 
-  if (!data || data.dataPoints.length === 0) return null;
+  if (!data || data.dataPoints.length === 0) {
+    return (
+      <Card className="bento-card border-0 shadow-none">
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[250px]">
+          <p className="text-muted-foreground text-sm">No data available</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="bento-card border-0 shadow-none">
@@ -91,30 +107,32 @@ export function PageTrafficChart({
           </div>
           <CardDescription>{description}</CardDescription>
         </div>
-        <div className="flex rounded-xl overflow-hidden bg-white/[0.04] backdrop-blur-[12px] backdrop-saturate-[1.2] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-          {(["90d", "30d", "7d"] as const).map((range) => (
-            <button
-              key={range}
-              onClick={() => setTimeRange(range)}
-              className={`relative px-4 py-1.5 text-sm transition-all overflow-hidden ${
-                timeRange === range
-                  ? "font-medium text-white bg-white/10"
-                  : "bg-transparent text-muted-foreground hover:bg-white/5"
-              }`}
-            >
-              {timeRange === range && (
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 animate-pulse" />
-              )}
-              <span className="relative">
-                {range === "90d"
-                  ? "Last 3 months"
-                  : range === "30d"
-                    ? "Last 30 days"
-                    : "Last 7 days"}
-              </span>
-            </button>
-          ))}
-        </div>
+        {showTimeRange && (
+          <div className="flex rounded-xl overflow-hidden bg-white/[0.04] backdrop-blur-[12px] backdrop-saturate-[1.2] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+            {(["90d", "30d", "7d"] as const).map((range) => (
+              <button
+                key={range}
+                onClick={() => setTimeRange(range)}
+                className={`relative px-4 py-1.5 text-sm transition-all overflow-hidden ${
+                  timeRange === range
+                    ? "font-medium text-white bg-white/10"
+                    : "bg-transparent text-muted-foreground hover:bg-white/5"
+                }`}
+              >
+                {timeRange === range && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 animate-pulse" />
+                )}
+                <span className="relative">
+                  {range === "90d"
+                    ? "Last 3 months"
+                    : range === "30d"
+                      ? "Last 30 days"
+                      : "Last 7 days"}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
       </CardHeader>
       <CardContent className={`pt-6 transition-opacity duration-300 ${fetching ? "opacity-50" : "opacity-100"}`}>
         <div className="flex gap-6 mb-4 text-sm">

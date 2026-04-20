@@ -43,6 +43,20 @@ interface ChannelChartProps {
 }
 
 export function ChannelChart({ data }: ChannelChartProps) {
+  if (!data || data.length === 0) {
+    return (
+      <Card className="bento-card border-0 shadow-none h-full">
+        <CardHeader className="pb-2">
+          <CardTitle>Attribution Channels</CardTitle>
+          <CardDescription>Where contacts came from (source / medium)</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center h-[280px]">
+          <p className="text-muted-foreground text-sm">No data available</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const chartData = data.map((d) => ({
     channel: SOURCE_LABELS[d.source] || d.source,
     medium: d.medium,

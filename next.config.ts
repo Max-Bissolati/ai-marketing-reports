@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         source: "/online-retail-report-2025",
         destination: "/reporting/wwx-2025",
       },
+      {
+        source: "/online-retail-report-2025-backup",
+        destination: "/reporting/wwx-2025-legacy",
+      },
     ];
   },
 };

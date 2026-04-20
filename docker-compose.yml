@@ -1,0 +1,26 @@
+services:
+  reports:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SINK_API_URL: https://ppay.click
+        SINK_API_TOKEN: ${SINK_API_TOKEN}
+    container_name: ai-marketing-reports
+    restart: unless-stopped
+    environment:
+      - SINK_API_URL=https://ppay.click
+      - SINK_API_TOKEN=${SINK_API_TOKEN}
+    networks:
+      - coolify
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.reports.rule=Host(`reports.thingymajigs.app`)
+      - traefik.http.routers.reports.entryPoints=https
+      - traefik.http.routers.reports.tls=true
+      - traefik.http.routers.reports.tls.certresolver=letsencrypt
+      - traefik.http.services.reports.loadbalancer.server.port=3000
+
+networks:
+  coolify:
+    external: true
