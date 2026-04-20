@@ -53,6 +53,33 @@ export interface LandingPageData {
     sources: { source: string; medium: string; count: number }[];
 }
 
+export interface WWXFormStats {
+  name: string;
+  submissions: number;
+  monthly: Array<{ month: string; count: number }>;
+}
+
+export interface WWXSubmitter {
+  email: string;
+  firstname: string;
+  lastname: string;
+  company: string;
+  submittedAt: string;
+  pageUrl: string;
+}
+
+export interface WWXCampaignData {
+  generatedAt: string;
+  forms: {
+    mainDownload: WWXFormStats;
+    blogVersion: WWXFormStats;
+    rsvp: WWXFormStats;
+    total: number;
+  };
+  submissionsMonthly: Array<{ month: string; count: number }>;
+  recentSubmitters: WWXSubmitter[];
+}
+
 export interface CampaignContact {
     id: string;
     email: string;

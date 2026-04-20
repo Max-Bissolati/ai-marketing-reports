@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         source: "/payouts-campaign-2026",
         destination: "/reporting/payouts",
       },
+      {
+        source: "/online-retail-report-2025",
+        destination: "/reporting/wwx-2025",
+      },
     ];
   },
 };
