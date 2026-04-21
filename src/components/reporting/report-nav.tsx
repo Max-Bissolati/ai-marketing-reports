@@ -40,10 +40,13 @@ export function ReportNav() {
           showCloseButton={true}
           className="!top-4 !bottom-4 !left-4 !h-[calc(100dvh-2rem)] !w-[300px] bg-transparent border-none shadow-none p-0"
         >
-          {/* Glass card */}
-          <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-[#0b0f4a] border border-white/10 shadow-[0_8px_48px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]">
+          {/* Dark solid navy card -> Testing pure black */}
+          <div 
+            className="h-full flex flex-col rounded-2xl overflow-hidden bg-black shadow-[0_16px_48px_rgba(0,0,0,0.9)]"
+            style={{ backgroundColor: '#000000' }}
+          >
 
-            <SheetHeader className="px-5 pt-6 pb-5 border-b border-white/[0.07] shrink-0">
+            <SheetHeader className="px-5 pt-6 pb-5 border-b border-white/[0.04] shrink-0">
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center shadow-[0_0_12px_rgba(255,102,0,0.2)]">
                   <LayoutDashboard className="h-4 w-4 text-primary" />
