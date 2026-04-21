@@ -42,8 +42,8 @@ export function ReportNav() {
         >
           {/* Dark slate/navy card */}
           <div 
-            className="h-full flex flex-col rounded-2xl overflow-hidden bg-[#0e1240] shadow-[0_16px_48px_rgba(0,0,0,0.9)]"
-            style={{ backgroundColor: '#0e1240' }}
+            className="h-full flex flex-col rounded-2xl overflow-hidden bg-[#0a0d33] shadow-[0_16px_48px_rgba(0,0,0,0.9)]"
+            style={{ backgroundColor: '#0a0d33' }}
           >
 
             <SheetHeader className="px-5 pt-6 pb-5 border-b border-white/[0.04] shrink-0">
