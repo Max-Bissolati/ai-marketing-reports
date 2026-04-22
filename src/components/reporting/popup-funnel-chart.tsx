@@ -9,13 +9,72 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { BarChart3 } from "lucide-react"
 import type { PopupFunnelData } from "@/types/reporting-types"
 
 interface PopupFunnelChartProps {
-    data: PopupFunnelData
+    data: PopupFunnelData | null
+    loading?: boolean
 }
 
-export function PopupFunnelChart({ data }: PopupFunnelChartProps) {
+export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProps) {
+    if (loading) {
+        return (
+            <Card className="bento-card border-0 shadow-none overflow-hidden">
+                <CardHeader className="border-b border-white/5 pb-6">
+                    <CardTitle className="text-2xl">Popup Funnel</CardTitle>
+                    <CardDescription className="text-muted-foreground mt-1">
+                        User journey from popup impression to dashboard sign-up
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="px-6 pb-6 pt-6">
+                    <div className="space-y-4">
+                        {[100, 60, 30].map((w, i) => (
+                            <div key={i} className="flex items-center gap-4">
+                                <div className="w-28 flex-shrink-0 space-y-1">
+                                    <div className="h-3 w-20 bg-white/10 rounded animate-pulse" />
+                                    <div className="h-2 w-16 bg-white/5 rounded animate-pulse" />
+                                </div>
+                                <div className="flex-1">
+                                    <div
+                                        className="h-14 rounded-lg bg-white/5 animate-pulse"
+                                        style={{ width: `${w}%` }}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+        )
+    }
+
+    if (!data) {
+        return (
+            <Card className="bento-card border-0 shadow-none overflow-hidden">
+                <CardHeader className="border-b border-white/5 pb-6">
+                    <CardTitle className="text-2xl">Popup Funnel</CardTitle>
+                    <CardDescription className="text-muted-foreground mt-1">
+                        User journey from popup impression to dashboard sign-up
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="px-6 pb-6 pt-6">
+                    <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+                        <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center">
+                            <BarChart3 className="w-7 h-7 text-muted-foreground/40" />
+                        </div>
+                        <div>
+                            <p className="text-base font-medium text-muted-foreground">No data available</p>
+                            <p className="text-xs text-muted-foreground/60 mt-1">
+                                No Userpilot popup was configured for this campaign
+                            </p>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        )
+    }
+
     const { impressions, clicks, signups, primaryCta, secondaryCta } = data
 
     // Calculate conversion rates

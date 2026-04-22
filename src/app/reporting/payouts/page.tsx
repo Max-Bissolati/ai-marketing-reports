@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { MetricsCards } from "@/components/reporting/metrics-cards";
 import { CampaignCharts } from "@/components/reporting/campaign-charts";
 import { MqlTable } from "@/components/reporting/mql-table";
@@ -10,14 +11,7 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import type { PopupFunnelData } from "@/types/reporting-types";
 
-// Mock data for the popup funnel
-const payoutsPopupData: PopupFunnelData = {
-  impressions: 2546,
-  clicks: 103,
-  signups: 35,
-  primaryCta: "Payouts Web page",
-  secondaryCta: "Dev docs page"
-};
+const USERPILOT_EXPERIENCE_ID = "52R3uhzX8i";
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -35,6 +29,17 @@ const item: Variants = {
 };
 
 export default function PayoutsDashboard() {
+  const [funnelData, setFunnelData] = useState<PopupFunnelData | null>(null);
+  const [funnelLoading, setFunnelLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/userpilot/funnel?experienceId=${USERPILOT_EXPERIENCE_ID}`)
+      .then((r) => r.json())
+      .then((d) => setFunnelData(d))
+      .catch(() => setFunnelData(null))
+      .finally(() => setFunnelLoading(false));
+  }, []);
+
   return (
     <div className="min-h-screen p-6 md:p-10 lg:p-14 max-w-[1600px] mx-auto overflow-x-clip relative">
       {/* Fixed background image - stays in standard z-index but is pointer-events-none */}
@@ -88,7 +93,7 @@ export default function PayoutsDashboard() {
 
           {/* Popup Funnel Chart - Full width, top priority */}
           <motion.div variants={item} className="col-span-1 md:col-span-12 relative z-10">
-            <PopupFunnelChart data={payoutsPopupData} />
+            <PopupFunnelChart data={funnelData} loading={funnelLoading} />
           </motion.div>
 
           {/* Campaign Landing Page Chart */}
