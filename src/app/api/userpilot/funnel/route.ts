@@ -5,14 +5,14 @@ const N8N_BASE = process.env.N8N_WEBHOOK_BASE_URL ?? "https://automations.thingy
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const experienceId = searchParams.get("experienceId");
+  const campaignSlug = searchParams.get("campaignSlug");
 
-  if (!experienceId) return NextResponse.json(null);
+  if (!campaignSlug) return NextResponse.json(null);
 
   try {
     const res = await fetch(
-      `${N8N_BASE}/webhook/userpilot-funnel-get?experienceId=${encodeURIComponent(experienceId)}`,
-      { next: { revalidate: 3600 } }
+      `${N8N_BASE}/webhook/userpilot-funnel-get?campaignSlug=${encodeURIComponent(campaignSlug)}`,
+      { next: { revalidate: 300 } }
     );
 
     if (!res.ok) return NextResponse.json(null);
@@ -25,8 +25,8 @@ export async function GET(request: Request) {
       impressions: Number(d.impressions),
       clicks: Number(d.clicks),
       signups: Number(d.signups),
-      primaryCta: String(d.primaryCta),
-      secondaryCta: String(d.secondaryCta),
+      primaryCta: String(d.primaryCta ?? ""),
+      secondaryCta: String(d.secondaryCta ?? ""),
     };
 
     return NextResponse.json(data);

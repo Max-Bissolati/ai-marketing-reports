@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect, useCallback } from "react"
 import { motion, type Variants } from "framer-motion"
 import {
     Card,
@@ -9,15 +10,61 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { BarChart3 } from "lucide-react"
+import { BarChart3, AlertCircle, Loader2 } from "lucide-react"
 import type { PopupFunnelData } from "@/types/reporting-types"
 
 interface PopupFunnelChartProps {
-    data: PopupFunnelData | null
-    loading?: boolean
+    campaignSlug: string
 }
 
-export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProps) {
+export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
+    const [data, setData] = useState<PopupFunnelData | null>(null)
+    const [loading, setLoading] = useState(true)
+    const [input, setInput] = useState("")
+    const [primaryCta, setPrimaryCta] = useState("")
+    const [secondaryCta, setSecondaryCta] = useState("")
+    const [saving, setSaving] = useState(false)
+    const [saveError, setSaveError] = useState<string | null>(null)
+
+    const fetchData = useCallback(async () => {
+        setLoading(true)
+        try {
+            const res = await fetch(`/api/userpilot/funnel?campaignSlug=${encodeURIComponent(campaignSlug)}`)
+            const json = await res.json()
+            setData(json)
+        } catch {
+            setData(null)
+        } finally {
+            setLoading(false)
+        }
+    }, [campaignSlug])
+
+    useEffect(() => { fetchData() }, [fetchData])
+
+    async function handleRegister(e: React.FormEvent) {
+        e.preventDefault()
+        setSaving(true)
+        setSaveError(null)
+        try {
+            const res = await fetch("/api/userpilot/funnel/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ campaignSlug, input, primaryCta, secondaryCta }),
+            })
+            const result = await res.json()
+            if (!result.success) {
+                setSaveError(result.error ?? "Could not register flow")
+                return
+            }
+            await fetchData()
+        } catch {
+            setSaveError("Network error — please try again")
+        } finally {
+            setSaving(false)
+        }
+    }
+
+    // --- Loading skeleton ---
     if (loading) {
         return (
             <Card className="bento-card border-0 shadow-none overflow-hidden">
@@ -36,10 +83,7 @@ export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProp
                                     <div className="h-2 w-16 bg-white/5 rounded animate-pulse" />
                                 </div>
                                 <div className="flex-1">
-                                    <div
-                                        className="h-14 rounded-lg bg-white/5 animate-pulse"
-                                        style={{ width: `${w}%` }}
-                                    />
+                                    <div className="h-14 rounded-lg bg-white/5 animate-pulse" style={{ width: `${w}%` }} />
                                 </div>
                             </div>
                         ))}
@@ -49,6 +93,7 @@ export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProp
         )
     }
 
+    // --- Configure UI (no data registered yet) ---
     if (!data) {
         return (
             <Card className="bento-card border-0 shadow-none overflow-hidden">
@@ -58,70 +103,104 @@ export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProp
                         User journey from popup impression to dashboard sign-up
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="px-6 pb-6 pt-6">
-                    <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
-                        <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center">
-                            <BarChart3 className="w-7 h-7 text-muted-foreground/40" />
+                <CardContent className="px-6 pb-8 pt-6">
+                    <div className="max-w-lg mx-auto">
+                        <div className="flex items-start gap-3 mb-6">
+                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <BarChart3 className="w-5 h-5 text-primary/60" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-foreground/80">Connect a Userpilot flow</p>
+                                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                                    Paste the numeric flow ID from the Userpilot URL
+                                    (<span className="font-mono text-primary/70">/flows/126/analytics</span>)
+                                    or the permalink copied from the Userpilot share button
+                                    (<span className="font-mono text-primary/70">?userpilot=ZXhw…</span>).
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="text-base font-medium text-muted-foreground">No data available</p>
-                            <p className="text-xs text-muted-foreground/60 mt-1">
-                                No Userpilot popup was configured for this campaign
-                            </p>
-                        </div>
+
+                        <form onSubmit={handleRegister} className="space-y-4">
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                    Flow ID or Permalink <span className="text-primary">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    value={input}
+                                    onChange={e => setInput(e.target.value)}
+                                    placeholder="e.g.  126  or  ?userpilot=ZXhwZXJpZW5jZTo1MlIzdWh6WDhp"
+                                    required
+                                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                        Primary CTA label
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={primaryCta}
+                                        onChange={e => setPrimaryCta(e.target.value)}
+                                        placeholder="e.g. Payouts Web page"
+                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
+                                    />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                                        Secondary CTA label
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={secondaryCta}
+                                        onChange={e => setSecondaryCta(e.target.value)}
+                                        placeholder="e.g. Dev docs page"
+                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            {saveError && (
+                                <div className="flex items-center gap-2 text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+                                    <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                                    {saveError}
+                                </div>
+                            )}
+
+                            <button
+                                type="submit"
+                                disabled={saving || !input.trim()}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary/20 hover:bg-primary/30 border border-primary/30 text-primary text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                {saving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                                {saving ? "Connecting…" : "Connect flow"}
+                            </button>
+                        </form>
                     </div>
                 </CardContent>
             </Card>
         )
     }
 
-    const { impressions, clicks, signups, primaryCta, secondaryCta } = data
+    // --- Chart view ---
+    const { impressions, clicks, signups, primaryCta: pCta, secondaryCta: sCta } = data
+    const clickRate = impressions > 0 ? ((clicks / impressions) * 100).toFixed(1) : "0.0"
+    const signupRate = clicks > 0 ? ((signups / clicks) * 100).toFixed(1) : "0.0"
+    const overallRate = impressions > 0 ? ((signups / impressions) * 100).toFixed(2) : "0.00"
 
-    // Calculate conversion rates
-    const clickRate = ((clicks / impressions) * 100).toFixed(1)
-    const signupRate = ((signups / clicks) * 100).toFixed(1)
-    const overallRate = ((signups / impressions) * 100).toFixed(2)
-
-    // Calculate widths for funnel visualization (proportional)
-    const maxVal = impressions
-    const impressionsWidth = 100
-    const clicksWidth = (clicks / maxVal) * 100
-    const signupsWidth = (signups / maxVal) * 100
-
+    const maxVal = impressions || 1
     const funnelStages = [
-        {
-            label: "Impressions",
-            value: impressions,
-            width: impressionsWidth,
-            color: "var(--primary)",
-            description: "Users who saw the popup",
-        },
-        {
-            label: "Clicks",
-            value: clicks,
-            width: clicksWidth,
-            color: "var(--chart-5)",
-            description: "Users who clicked a CTA",
-        },
-        {
-            label: "Signups",
-            value: signups,
-            width: signupsWidth,
-            color: "var(--chart-4)",
-            description: "Dashboard sign-ups",
-        },
+        { label: "Impressions", value: impressions, width: 100, color: "var(--primary)", description: "Users who saw the popup" },
+        { label: "Clicks", value: clicks, width: (clicks / maxVal) * 100, color: "var(--chart-5)", description: "Users who clicked a CTA" },
+        { label: "Signups", value: signups, width: (signups / maxVal) * 100, color: "var(--chart-4)", description: "Dashboard sign-ups" },
     ]
 
     const container: Variants = {
         hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.15,
-            },
-        },
+        show: { opacity: 1, transition: { staggerChildren: 0.15 } },
     }
-
     const item: Variants = {
         hidden: { opacity: 0, x: -20 },
         show: { opacity: 1, x: 0, transition: { type: "spring" as const, stiffness: 100, damping: 15 } },
@@ -137,45 +216,37 @@ export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProp
                             User journey from popup impression to dashboard sign-up
                         </CardDescription>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30">
-                            {overallRate}% Overall Conversion
-                        </Badge>
-                    </div>
+                    <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30">
+                        {overallRate}% Overall Conversion
+                    </Badge>
                 </div>
             </CardHeader>
             <CardContent className="px-6 pb-6 pt-6">
-                {/* CTA Labels */}
                 <div className="flex flex-wrap gap-4 mb-8">
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-primary" />
-                        <span className="text-sm text-muted-foreground">Primary CTA:</span>
-                        <span className="text-sm font-medium">{primaryCta}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-chart-5" />
-                        <span className="text-sm text-muted-foreground">Secondary CTA:</span>
-                        <span className="text-sm font-medium">{secondaryCta}</span>
-                    </div>
+                    {pCta && (
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-primary" />
+                            <span className="text-sm text-muted-foreground">Primary CTA:</span>
+                            <span className="text-sm font-medium">{pCta}</span>
+                        </div>
+                    )}
+                    {sCta && (
+                        <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-chart-5" />
+                            <span className="text-sm text-muted-foreground">Secondary CTA:</span>
+                            <span className="text-sm font-medium">{sCta}</span>
+                        </div>
+                    )}
                 </div>
 
-                {/* Horizontal Funnel Visualization */}
-                <motion.div
-                    variants={container}
-                    initial="hidden"
-                    animate="show"
-                    className="space-y-4"
-                >
+                <motion.div variants={container} initial="hidden" animate="show" className="space-y-4">
                     {funnelStages.map((stage, index) => (
                         <motion.div key={stage.label} variants={item} className="relative">
                             <div className="flex items-center gap-4">
-                                {/* Stage Label */}
                                 <div className="w-28 flex-shrink-0">
                                     <div className="text-sm font-medium">{stage.label}</div>
                                     <div className="text-xs text-muted-foreground">{stage.description}</div>
                                 </div>
-
-                                {/* Funnel Bar */}
                                 <div className="flex-1 relative">
                                     <div
                                         className="h-14 rounded-lg relative overflow-hidden transition-all duration-500"
@@ -185,11 +256,8 @@ export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProp
                                             boxShadow: `0 4px 20px ${stage.color}33`,
                                         }}
                                     >
-                                        {/* Shine effect */}
                                         <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent" />
-
-                                        {/* Value display */}
-                                        <div className="absolute inset-0 flex items-center justify-between px-4">
+                                        <div className="absolute inset-0 flex items-center px-4">
                                             <span className="text-lg font-bold text-white drop-shadow-sm">
                                                 {stage.value.toLocaleString()}
                                             </span>
@@ -197,8 +265,6 @@ export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProp
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Conversion rate between stages */}
                             {index < funnelStages.length - 1 && (
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.8 }}
@@ -215,7 +281,6 @@ export function PopupFunnelChart({ data, loading = false }: PopupFunnelChartProp
                     ))}
                 </motion.div>
 
-                {/* Summary Stats */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
