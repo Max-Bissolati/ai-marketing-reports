@@ -25,6 +25,7 @@ export async function GET(request: Request) {
       impressions: Number(d.impressions),
       clicks: Number(d.clicks),
       signups: Number(d.signups),
+      dismissed: Number(d.dismissed ?? 0),
       primaryCta: String(d.primaryCta ?? ""),
       secondaryCta: String(d.secondaryCta ?? ""),
     };

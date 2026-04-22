@@ -1,9 +1,10 @@
 export interface PopupFunnelData {
-    impressions: number;       // Users who saw popup: 2546
-    clicks: number;            // Users who clicked: 103
-    signups: number;           // Dashboard sign-ups: 35
-    primaryCta: string;        // "Payouts Web page"
-    secondaryCta: string;      // "Dev docs page"
+    impressions: number;       // Users who saw popup
+    clicks: number;            // Users who clicked a CTA
+    signups: number;           // Dashboard sign-ups
+    dismissed: number;         // Users who dismissed without clicking
+    primaryCta: string;
+    secondaryCta: string;
 }
 
 export interface CampaignPageDataPoint {

@@ -185,10 +185,11 @@ export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
     }
 
     // --- Chart view ---
-    const { impressions, clicks, signups, primaryCta: pCta, secondaryCta: sCta } = data
+    const { impressions, clicks, signups, dismissed, primaryCta: pCta, secondaryCta: sCta } = data
     const clickRate = impressions > 0 ? ((clicks / impressions) * 100).toFixed(1) : "0.0"
     const signupRate = clicks > 0 ? ((signups / clicks) * 100).toFixed(1) : "0.0"
     const overallRate = impressions > 0 ? ((signups / impressions) * 100).toFixed(2) : "0.00"
+    const dismissRate = impressions > 0 ? ((dismissed / impressions) * 100).toFixed(1) : "0.0"
 
     const maxVal = impressions || 1
     const funnelStages = [
@@ -285,7 +286,7 @@ export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8 }}
-                    className="mt-8 pt-6 border-t border-white/5 grid grid-cols-3 gap-4"
+                    className="mt-8 pt-6 border-t border-white/5 grid grid-cols-2 sm:grid-cols-4 gap-4"
                 >
                     <div className="text-center">
                         <div className="text-2xl font-bold text-primary">{clickRate}%</div>
@@ -298,6 +299,13 @@ export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
                     <div className="text-center">
                         <div className="text-2xl font-bold">{overallRate}%</div>
                         <div className="text-xs text-muted-foreground mt-1">Overall Conversion</div>
+                    </div>
+                    <div className="text-center">
+                        <div className="text-2xl font-bold text-muted-foreground">{dismissRate}%</div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                            Dismissed
+                            <span className="ml-1 text-muted-foreground/50">({dismissed.toLocaleString()})</span>
+                        </div>
                     </div>
                 </motion.div>
             </CardContent>
