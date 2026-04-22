@@ -9,6 +9,7 @@ import { ChannelChart } from "@/components/reporting/channel-chart";
 import { CampaignContactsTable } from "@/components/reporting/campaign-contacts-table";
 import { LandingPageChart } from "@/components/reporting/landing-page-chart";
 import { PageTrafficChart } from "@/components/reporting/page-traffic-chart";
+import { PopupFunnelChart } from "@/components/reporting/popup-funnel-chart";
 import type { CampaignDashboardData } from "@/types/reporting-types";
 
 const container: Variants = {
@@ -141,6 +142,11 @@ export default function TravelDashboard() {
               kpis={data.kpis}
               totalBeforeFilter={data.totalBeforeFilter}
             />
+          </motion.div>
+
+          {/* Popup Funnel Chart */}
+          <motion.div variants={item} className="col-span-1 md:col-span-12 relative z-10">
+            <PopupFunnelChart campaignSlug="travel-2026" />
           </motion.div>
 
           {/* Charts Row */}

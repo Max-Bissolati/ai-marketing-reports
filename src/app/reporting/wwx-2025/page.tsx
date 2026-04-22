@@ -9,6 +9,7 @@ import { ChannelChart } from "@/components/reporting/channel-chart";
 import { PageTrafficChart } from "@/components/reporting/page-traffic-chart";
 import { LandingPageChart } from "@/components/reporting/landing-page-chart";
 import { CampaignContactsTable } from "@/components/reporting/campaign-contacts-table";
+import { PopupFunnelChart } from "@/components/reporting/popup-funnel-chart";
 import type { WWXCampaignData } from "@/types/reporting-types";
 
 
@@ -164,6 +165,11 @@ export default function WWXDashboard() {
           {/* KPI Cards */}
           <motion.div variants={item} className="col-span-1 md:col-span-12">
             <ReportKpiCards kpis={kpis} />
+          </motion.div>
+
+          {/* Popup Funnel Chart */}
+          <motion.div variants={item} className="col-span-1 md:col-span-12 relative z-10">
+            <PopupFunnelChart campaignSlug="wwx-2025" />
           </motion.div>
 
           {/* Lifecycle + Channel */}

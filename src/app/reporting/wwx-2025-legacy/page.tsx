@@ -21,6 +21,7 @@ import { WWXFormChart } from "@/components/reporting/wwx-form-chart";
 import { WWXInfluencedChart } from "@/components/reporting/wwx-influenced-chart";
 import { WWXSubmittersTable } from "@/components/reporting/wwx-submitters-table";
 import { WWXPageTrafficChart } from "@/components/reporting/wwx-page-traffic-chart";
+import { PopupFunnelChart } from "@/components/reporting/popup-funnel-chart";
 import type { WWXCampaignData, WWXPageTrafficData } from "@/types/reporting-types";
 
 // ─── Static attribution data (source: HubSpot Campaign Dashboard) ────────────
@@ -155,6 +156,11 @@ export default function WWXDashboard() {
                 </div>
               ))}
             </div>
+          </motion.div>
+
+          {/* Popup Funnel Chart */}
+          <motion.div variants={item} className="col-span-1 md:col-span-12 relative z-10">
+            <PopupFunnelChart campaignSlug="wwx-2025-legacy" />
           </motion.div>
 
           {/* ── Form Submissions Chart (live) ────────────────────────────── */}

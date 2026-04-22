@@ -112,10 +112,12 @@ export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
                             <div>
                                 <p className="text-sm font-medium text-foreground/80">Connect a Userpilot flow</p>
                                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                                    This campaign has a Userpilot popup flow. To display live funnel data (impressions, CTA clicks, dismissals), link it here.
                                     Paste the numeric flow ID from the Userpilot URL
-                                    (<span className="font-mono text-primary/70">/flows/126/analytics</span>)
-                                    or the permalink copied from the Userpilot share button
+                                    (<span className="font-mono text-primary/70">userpilot.com/flows/<strong>126</strong>/analytics</span>)
+                                    or the share permalink
                                     (<span className="font-mono text-primary/70">?userpilot=ZXhw…</span>).
+                                    If this campaign has no popup, skip this — the chart won't appear.
                                 </p>
                             </div>
                         </div>
