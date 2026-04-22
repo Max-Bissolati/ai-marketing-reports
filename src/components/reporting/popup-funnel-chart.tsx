@@ -21,8 +21,6 @@ export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
     const [data, setData] = useState<PopupFunnelData | null>(null)
     const [loading, setLoading] = useState(true)
     const [input, setInput] = useState("")
-    const [primaryCta, setPrimaryCta] = useState("")
-    const [secondaryCta, setSecondaryCta] = useState("")
     const [saving, setSaving] = useState(false)
     const [saveError, setSaveError] = useState<string | null>(null)
 
@@ -49,7 +47,7 @@ export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
             const res = await fetch("/api/userpilot/funnel/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ campaignSlug, input, primaryCta, secondaryCta }),
+                body: JSON.stringify({ campaignSlug, input }),
             })
             const result = await res.json()
             if (!result.success) {
@@ -135,33 +133,6 @@ export function PopupFunnelChart({ campaignSlug }: PopupFunnelChartProps) {
                                     required
                                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
                                 />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                                        Primary CTA label
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={primaryCta}
-                                        onChange={e => setPrimaryCta(e.target.value)}
-                                        placeholder="e.g. Payouts Web page"
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                                        Secondary CTA label
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={secondaryCta}
-                                        onChange={e => setSecondaryCta(e.target.value)}
-                                        placeholder="e.g. Dev docs page"
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all"
-                                    />
-                                </div>
                             </div>
 
                             {saveError && (
