@@ -140,7 +140,7 @@ The bento-card container uses framer-motion `layout` prop to smoothly change wid
 ### New Files
 
 ```
-ai-marketing-ui/src/
+services/ai-marketing-ui/src/
   app/
     skills/
       page.tsx                           # Skills home (card stack)

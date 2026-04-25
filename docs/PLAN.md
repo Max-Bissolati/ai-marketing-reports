@@ -449,7 +449,7 @@ interface ArticlesTableProps {
 ### New Files
 
 ```
-ai-marketing-ui/
+services/ai-marketing-ui/
 ├── src/
 │   ├── types/
 │   │   └── reporting-types.ts          # NEW: TypeScript interfaces
@@ -465,7 +465,7 @@ ai-marketing-ui/
 ### Modified Files
 
 ```
-ai-marketing-ui/
+services/ai-marketing-ui/
 └── src/
     └── app/
         └── reporting/
@@ -476,7 +476,7 @@ ai-marketing-ui/
 ### Potentially Deprecated
 
 ```
-ai-marketing-ui/
+services/ai-marketing-ui/
 └── src/
     └── components/
         └── reporting/
